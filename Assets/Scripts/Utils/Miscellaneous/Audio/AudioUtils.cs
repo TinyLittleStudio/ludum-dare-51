@@ -6,7 +6,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
     {
         public static void Play(string id, float x, float y)
         {
-            if (GameObjectUtils.Instantiate(id, out GameObject gameObject))
+            if (GameObjectUtils.Instantiate($"Prefabs/Audio/{id}", out GameObject gameObject))
             {
                 gameObject.transform.position = new Vector3(x, y, 0.0f);
                 gameObject.IsEnabled(true);

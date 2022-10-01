@@ -30,6 +30,16 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             }
         }
 
+        public void InvokeMenu()
+        {
+            Manager.GetManager().InvokeMenu();
+        }
+
+        public void InvokeGame()
+        {
+            Manager.GetManager().InvokeGame();
+        }
+
         public override string ToString() => $"MenUI ()";
     }
 }

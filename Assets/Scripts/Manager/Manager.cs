@@ -20,9 +20,45 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             this.tickTime = 0.0f;
         }
 
+        private void OnScene(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            OnSceneHandle(scene, loadSceneMode);
+        }
+
+        private void OnSceneHandle(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            if (scene != null)
+            {
+                switch (scene.name)
+                {
+                    case IDs.SCENE_ID__LEVEL_001:
+                    case IDs.SCENE_ID__LEVEL_002:
+                    case IDs.SCENE_ID__LEVEL_003:
+                    case IDs.SCENE_ID__LEVEL_004:
+                    case IDs.SCENE_ID__LEVEL_005:
+
+                        if (Profile != null)
+                        {
+                            Profile.ChargeReset();
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
         public void InvokeMenu()
         {
             Context = Context.MENU;
+
+            if (World.Current != null)
+            {
+                World.Current.InvokeDelete();
+                World.Current = null;
+            }
 
             Event.Fire(
                 new Event(IDs.EVENT_ID__MANAGER_CONTEXT)
@@ -45,6 +81,12 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         public void InvokeGame()
         {
             Context = Context.GAME;
+
+            if (World.Current == null)
+            {
+                World.Current = new World();
+                World.Current.InvokeCreate();
+            }
 
             Event.Fire(
                 new Event(IDs.EVENT_ID__MANAGER_CONTEXT)
@@ -75,6 +117,13 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             {
                 return;
             }
+
+            if (Profile == null)
+            {
+                Profile = new Profile();
+            }
+
+            SceneUtils.Inject(OnScene);
 
             InvokeMenu();
         }
@@ -149,6 +198,8 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         }
 
         public Context Context { get; private set; }
+
+        public Profile Profile { get; private set; }
 
         public override string ToString() => $"Manager ()";
 

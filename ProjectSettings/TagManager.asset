@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Player Location
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: 2D_DEFAULT_BACKGROUND
+    uniqueID: 2775849229
+    locked: 0
+  - name: 2D_DEFAULT
+    uniqueID: 1567819835
+    locked: 0
+  - name: 2D_DEFAULT_FOREGROUND
+    uniqueID: 635153519
     locked: 0
