@@ -34,12 +34,40 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                     case IDs.SCENE_ID__LEVEL_001:
                     case IDs.SCENE_ID__LEVEL_002:
                     case IDs.SCENE_ID__LEVEL_003:
-                    case IDs.SCENE_ID__LEVEL_004:
-                    case IDs.SCENE_ID__LEVEL_005:
 
                         if (Profile != null)
                         {
                             Profile.ChargeReset();
+                            Profile.Charge(0);
+
+                            Profile.IsTutorial = true;
+                        }
+
+                        break;
+
+                    case IDs.SCENE_ID__LEVEL_004:
+                    case IDs.SCENE_ID__LEVEL_005:
+                    case IDs.SCENE_ID__LEVEL_006:
+
+                        if (Profile != null)
+                        {
+                            Profile.ChargeReset();
+                            Profile.Charge(1);
+
+                            Profile.IsTutorial = false;
+                        }
+
+                        break;
+
+                    case IDs.SCENE_ID__LEVEL_007:
+                    case IDs.SCENE_ID__LEVEL_008:
+
+                        if (Profile != null)
+                        {
+                            Profile.ChargeReset();
+                            Profile.Charge(0);
+
+                            Profile.IsTutorial = false;
                         }
 
                         break;

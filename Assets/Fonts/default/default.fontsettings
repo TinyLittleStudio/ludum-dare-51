@@ -48,7 +48,7 @@ Font:
       y: 5
       width: 8
       height: -8
-    advance: 4
+    advance: 2
     flipped: 0
   - serializedVersion: 2
     index: 34
@@ -224,7 +224,7 @@ Font:
       y: 5
       width: 8
       height: -8
-    advance: 4
+    advance: 2
     flipped: 0
   - serializedVersion: 2
     index: 45
@@ -256,7 +256,7 @@ Font:
       y: 5
       width: 8
       height: -8
-    advance: 4
+    advance: 2
     flipped: 0
   - serializedVersion: 2
     index: 47

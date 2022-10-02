@@ -4,7 +4,27 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 {
     public class Obstacle : MonoBehaviour
     {
-        private GameObject[] ages;
+        [Header("Settings")]
+
+        [SerializeField]
+        private int age;
+
+        [SerializeField]
+        private ObstacleVariant[] obstacleVariants;
+
+        private void Awake()
+        {
+            AwakeEvents();
+        }
+
+        private void AwakeEvents()
+        {
+            age = age - 1;
+
+            OnWorld(
+                new Event(IDs.EVENT_ID__WORLD)
+            );
+        }
 
         private void OnEnable()
         {
@@ -28,20 +48,62 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
         private void OnWorld(Event e)
         {
+            OnWorldAge(e);
+        }
+
+        private void OnWorldAge(Event e)
+        {
             if (e == null)
             {
                 return;
             }
 
-            if (World.Current != null)
-            {
-                int age = World.Current.GetAge();
+            SetAge(age + 1);
+        }
 
-                if (age > ages.Length)
+        public int GetAge()
+        {
+            return this.age;
+        }
+
+        public int SetAge(int age)
+        {
+            if (obstacleVariants != null)
+            {
+                ObstacleVariant next = null;
+                ObstacleVariant prev = null;
+
+                foreach (ObstacleVariant obstacleVariant in obstacleVariants)
                 {
-                    GameObject.Destroy(gameObject.transform.root.gameObject);
+                    if (obstacleVariant != null)
+                    {
+                        obstacleVariant.IsEnabled(obstacleVariant.IsAge(age));
+
+                        if (next == null && obstacleVariant.IsAge(age))
+                        {
+                            next = obstacleVariant;
+                        }
+
+                        if (prev == null && obstacleVariant.IsAge(this.age))
+                        {
+                            prev = obstacleVariant;
+                        }
+                    }
+                }
+
+                if (next != null && prev != null)
+                {
+                    next.transform.position = prev.transform.position;
+                    next.transform.rotation = prev.transform.rotation;
+                }
+
+                if (next == null)
+                {
+                    GameObject.Destroy(transform.root.gameObject);
                 }
             }
+
+            return this.age = age;
         }
 
         public override string ToString() => $"Obstacle ()";

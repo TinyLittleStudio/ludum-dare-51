@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 {
     public class World
@@ -10,6 +12,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         private float timeTotal;
 
         public float Time => time;
+
         public float TimeTotal => timeTotal;
 
         private int age;
@@ -59,6 +62,14 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             if (Player == null)
             {
                 Player = PlayerUtils.Instantiate();
+
+                if (Player != null)
+                {
+                    float x = Player.transform.position.x;
+                    float y = Player.transform.position.y;
+
+                    AudioUtils.Play(IDs.AUDIO_ID__TUBE, x, y);
+                }
             }
 
             if (IsPaused)
@@ -71,12 +82,37 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                 return;
             }
 
+            if (Manager.GetManager().Profile.IsTutorial)
+            {
+                return;
+            }
+
             if (Manager.GetManager().Profile.IsGameOver())
             {
                 return;
             }
 
-            time += Settings.TICK_TIME;
+            bool hasPressed = false;
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                hasPressed = true;
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                hasPressed = true;
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                hasPressed = true;
+            }
+
+            if (hasPressed && Player != null && Player.IsEnabled())
+            {
+                time += Settings.TICK_TIME;
+            }
 
             if (time >= timeTotal)
             {
@@ -84,11 +120,39 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                 {
                     Manager.GetManager().Profile.Charge(-1);
 
-                    Event.Fire(
-                        new Event(IDs.EVENT_ID__WORLD_TURN_OFF)
-                    );
+                    float x = Player.transform.position.x;
+                    float y = Player.transform.position.y;
 
-                    SetAge(GetAge() + 1);
+                    if (!Manager.GetManager().Profile.IsGameOver())
+                    {
+                        Event.Fire(
+                            new Event(IDs.EVENT_ID__WORLD_TURN_OFF)
+                        );
+                    }
+
+                    AudioUtils.Play(IDs.AUDIO_ID__TURN_OFF, x, y);
+
+                    Watch.NewWatch(1.0f, (int tick, bool isFinished) =>
+                    {
+                        if (isFinished)
+                        {
+                            if (!Manager.GetManager().Profile.IsGameOver())
+                            {
+                                SetAge(GetAge() + 1);
+                            }
+                        }
+                    });
+
+                    Watch.NewWatch(1.5f, (int tick, bool isFinished) =>
+                    {
+                        if (isFinished)
+                        {
+                            if (!Manager.GetManager().Profile.IsGameOver())
+                            {
+                                AudioUtils.Play(IDs.AUDIO_ID__TURN_ON, x, y);
+                            }
+                        }
+                    });
 
                     Watch.NewWatch(2.0f, (int tick, bool isFinished) =>
                     {
@@ -126,7 +190,6 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         {
             Event.Fire(
                 new Event(IDs.EVENT_ID__WORLD)
-                    .WithArgument<int>(IDs.EVENT_ARGUMENT_ID__AGE, age)
             );
 
             return this.age = age;

@@ -4,8 +4,8 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 {
     public class Profile
     {
-        private const int MIN_BATTERY_CHARGES = 0;
-        private const int MAX_BATTERY_CHARGES = 5;
+        private const int MIN_BATTERY_CHARGES = -1;
+        private const int MAX_BATTERY_CHARGES = +5;
 
         private int batteryCharges;
 
@@ -23,7 +23,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                 World.Current.Reset();
             }
 
-            Charge(3);
+            Charge(0);
         }
 
         public void Charge()
@@ -42,7 +42,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                     .WithArgument<int>(IDs.EVENT_ARGUMENT_ID__BATTERY_CHARGES, batteryCharges)
             );
 
-            if (batteryCharges <= 0)
+            if (batteryCharges < 0)
             {
                 Event.Fire(
                     new Event(IDs.EVENT_ID__PROFILE_GAME_OVER)
@@ -54,8 +54,10 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
         public bool IsGameOver()
         {
-            return batteryCharges <= 0;
+            return batteryCharges < 0;
         }
+
+        public bool IsTutorial { get; set; }
 
         public override string ToString() => $"Profile ()";
     }

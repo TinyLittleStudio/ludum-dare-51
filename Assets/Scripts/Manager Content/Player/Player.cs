@@ -39,7 +39,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
             if (y < Player.THRESHOLD)
             {
-                Die();
+                DieWithReload();
             }
 
             if (World.Current != null)
@@ -74,15 +74,36 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         {
             if (gameObject.IsEnabled())
             {
-                Watch.NewWatch(0.25f, (int tick, bool isFinished) =>
+                float x = gameObject.transform.position.x;
+                float y = gameObject.transform.position.y;
+
+                AudioUtils.Play(IDs.AUDIO_ID__BREAK, x, y);
+
+                ParticleUtils.Play(IDs.PARTICLE_ID__BREAK, x, y);
+
+                gameObject.IsEnabled(false);
+            }
+        }
+
+        private void DieWithReload()
+        {
+            if (gameObject.IsEnabled())
+            {
+                Die();
+
+                Watch.NewWatch(2.0f, (int tick, bool isFinished) =>
                 {
                     if (isFinished)
                     {
-                        SceneUtils.Reload();
+                        if (gameObject != null)
+                        {
+                            if (!gameObject.IsEnabled())
+                            {
+                                SceneUtils.Reload();
+                            }
+                        }
                     }
                 });
-
-                gameObject.IsEnabled(false);
             }
         }
 

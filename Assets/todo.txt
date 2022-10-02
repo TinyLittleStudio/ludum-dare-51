@@ -1,26 +1,6 @@
 ToDo:
-
-* Implement Obstacles
-* Implement Goal
-
-ToDo Bonus:
-* Improve Player Controls
-	* Add Particles
-* Improve Battery Charges UI
-	* Add Consumption Effect
-* Collectable
-	* Add Audio
-	* Add Particles
-* Death Animation
-* Improve UI Textures
-* Add Second Tile Type for Walls
-
-* Implement Sign to Interact with for messages
-* Checkpoints
-
-ToDo Cleanup:
-- World.cs
-- Controls.cs
-- ControlsWithCamera.cs
-- Profile.cs
-- Player.cs
+- Cleanup Script: World.cs
+- Cleanup Script: Controls.cs
+- Cleanup Script: Profile.cs
+- Cleanup Script: Player.cs
+- Cleanup Script: TerminalDialogue.cs

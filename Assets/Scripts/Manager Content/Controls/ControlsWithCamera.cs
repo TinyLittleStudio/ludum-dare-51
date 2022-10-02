@@ -6,7 +6,9 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
     public class ControlsWithCamera : MonoBehaviour
     {
         private const float CAMERA_VELOCITY = 16.0f;
-        private const float CAMERA_DISTANCE = 4.0f;
+
+        private const float CAMERA_OFFSET_X = 00.0f;
+        private const float CAMERA_OFFSET_Y = 02.0f;
 
         [Header("Settings")]
 
@@ -37,15 +39,21 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
             if (main != null)
             {
-                Vector3 target;
+                Vector3 target = transform.position;
 
-                target = Vector2.Lerp(main.transform.position, transform.position + new Vector3(0.0f, 2.0f, 0.0f), Time.fixedDeltaTime * ControlsWithCamera.CAMERA_VELOCITY);
+                target.x = target.x + ControlsWithCamera.CAMERA_OFFSET_X;
+                target.y = target.y + ControlsWithCamera.CAMERA_OFFSET_Y;
+
+                if (Controls != null)
+                {
+                    Vector3 lookAt = Controls.GetDirection().ToVector();
+
+                    target.x = target.x + lookAt.x;
+                }
+
+                target = Vector2.Lerp(main.transform.position, target, Time.fixedDeltaTime * ControlsWithCamera.CAMERA_VELOCITY);
 
                 target.z = -10.0f;
-
-                // target = Vector3.ClampMagnitude(target, ControlsWithCamera.CAMERA_DISTANCE);
-
-                // target.x = target.x + (Controls.GetDirection().ToVector().x * -1.0f);
 
                 main.transform.position = target;
             }

@@ -42,6 +42,20 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         [Space(10)]
 
         [SerializeField]
+        private float dustTime;
+
+        [SerializeField]
+        private float dustTimeTotal;
+
+        [SerializeField]
+        private float dustWalkTime;
+
+        [SerializeField]
+        private float dustWalkTimeTotal;
+
+        [Space(10)]
+
+        [SerializeField]
         private Direction direction;
 
         private void Awake()
@@ -193,6 +207,30 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             isWalking = Mathf.Abs(velocityNormalized.x) > 0.0f;
 
             isWalking = isWalking && !isJumping && isJumpingGrounded;
+
+            if (isWalking)
+            {
+                float x = gameObject.transform.position.x;
+                float y = gameObject.transform.position.y - 0.5f;
+
+                dustTime += Time.fixedDeltaTime;
+
+                if (dustTime > dustTimeTotal)
+                {
+                    ParticleUtils.Play(IDs.PARTICLE_ID__PLAYER_WALK, x, y);
+
+                    dustTime = 0.0f;
+                }
+
+                dustWalkTime += Time.deltaTime;
+
+                if (dustWalkTime > dustWalkTimeTotal)
+                {
+                    AudioUtils.Play(IDs.AUDIO_ID__PLAYER_WALK, x, y);
+
+                    dustWalkTime = 0.0f;
+                }
+            }
         }
 
         private void FixedUpdateControlsJump()
@@ -208,6 +246,13 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                     velocityJumping = velocityJumping * Controls.JUMP_FORCE;
 
                     Rigidbody2D.AddForce(velocityJumping, ForceMode2D.Force);
+
+                    float x = Rigidbody2D.transform.position.x;
+                    float y = Rigidbody2D.transform.position.y;
+
+                    AudioUtils.Play(IDs.AUDIO_ID__PLAYER_JUMP, x, y);
+
+                    ParticleUtils.Play(IDs.PARTICLE_ID__PLAYER_JUMP, x, y);
 
                     isJumping = false;
                     isJumpingGrounded = false;

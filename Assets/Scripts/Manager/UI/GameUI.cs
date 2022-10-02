@@ -4,6 +4,8 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 {
     public class GameUI : MonoBehaviour
     {
+        private const int THRESHOLD = 5;
+
         [Header("Settings")]
 
         [SerializeField]
@@ -49,6 +51,16 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
             {
                 containerTransition.IsEnabled(true);
             }
+        }
+
+        private void Start()
+        {
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            AudioUtils.Play(IDs.AUDIO_ID__START_APPLICATION_GAME, 0.0f, 0.0f);
         }
 
         private void OnEnable()
@@ -110,7 +122,11 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
                 return;
             }
 
-            int total = e.GetValue<int>(IDs.EVENT_ARGUMENT_ID__BATTERY_CHARGES, 0);
+            int total;
+
+            total = e.GetValue<int>(IDs.EVENT_ARGUMENT_ID__BATTERY_CHARGES, 0);
+
+            total = Mathf.Clamp(total, 0, GameUI.THRESHOLD);
 
             if (userInterfaceBatteryCharges != null)
             {

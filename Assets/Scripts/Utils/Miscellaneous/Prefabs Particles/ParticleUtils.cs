@@ -8,7 +8,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
     {
         public static void Play(string particleId, float x, float y)
         {
-            if (GameObjectUtils.Instantiate($"Prefabs/Particles/{particleId}", out ParticleSystem particleSystem))
+            if (GameObjectUtils.Instantiate($"Prefabs/Particle/{particleId}", out ParticleSystem particleSystem))
             {
                 MainModule mainModule = particleSystem.main;
                 mainModule.stopAction = ParticleSystemStopAction.Destroy;

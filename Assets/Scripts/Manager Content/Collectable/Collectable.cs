@@ -17,8 +17,6 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
         private void Awake()
         {
             AwakeCircleCollider2D();
-
-            hasCollected = true;
         }
 
         private void AwakeCircleCollider2D()
@@ -61,8 +59,6 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
             if (collider2d.gameObject.CompareTag(IDs.TAG_ID__PLAYER))
             {
-                collider2d.gameObject.IsEnabled(false);
-
                 float x = gameObject.transform.position.x;
                 float y = gameObject.transform.position.y;
 
@@ -77,7 +73,7 @@ namespace TinyLittleStudio.LudumDare51.PROJECT_NAME
 
                 GameObject.Destroy(gameObject);
 
-                hasCollected = false;
+                hasCollected = true;
             }
         }
 
